@@ -61,7 +61,7 @@ def plot_elastic_moduli(E1, E2, E3):
     ax.set_ylabel('y')
     ax.set_zlabel('z')
     ax.set_title('Elastic Moduli')
-    fig.colorbar(ax.plot_surface(X, Y, Z, cmap=cmap, norm=norm), label='Young\'s Modulus')
+    fig.colorbar(ax.plot_surface(X, Y, Z, cmap=cmap, norm=norm), label='Young\'s Modulus (Pa)')
     
     return fig
 def plot_shear_modulus(G12, G23, G31):
@@ -80,7 +80,7 @@ def plot_shear_modulus(G12, G23, G31):
     ax.set_ylabel('y')
     ax.set_zlabel('z')
     ax.set_title('Shear Modulus')
-    fig.colorbar(ax.plot_surface(X, Y, Z, cmap=cmap, norm=norm), label='Shear Modulus')
+    fig.colorbar(ax.plot_surface(X, Y, Z, cmap=cmap, norm=norm), label='Shear Modulus (Pa)')
     
     return fig
     
