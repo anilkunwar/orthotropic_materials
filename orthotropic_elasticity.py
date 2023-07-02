@@ -3,47 +3,47 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-def generate_compliance_matrix(E1, E2, E3, nu12, nu23, nu31):
+def generate_stiffness_matrix(E1, E2, E3, nu12, nu23, nu31):
     # Calculate the engineering constants
     G12 = E2 / (2 * (1 + nu12))
     G23 = E3 / (2 * (1 + nu23))
     G31 = E1 / (2 * (1 + nu31))
 
     # Initialize the 6x6 stiffness matrix
-    compliance_matrix = np.zeros((6, 6))
+    stiffness_matrix = np.zeros((6, 6))
 
     # Fill the upper-left 3x3 block (extensional strains)
-    compliance_matrix[0, 0] = 1 / E1
-    compliance_matrix[0, 1] = -nu12 / E1
-    compliance_matrix[0, 2] = -nu31 / E1
-    compliance_matrix[1, 0] = -nu12 / E2
-    compliance_matrix[1, 1] = 1 / E2
-    compliance_matrix[1, 2] = -nu23 / E2
-    compliance_matrix[2, 0] = -nu31 / E3
-    compliance_matrix[2, 1] = -nu23 / E3
-    compliance_matrix[2, 2] = 1 / E3
+    stiffness_matrix[0, 0] = 1 / E1
+    stiffness_matrix[0, 1] = -nu12 / E1
+    stiffness_matrix[0, 2] = -nu31 / E1
+    stiffness_matrix[1, 0] = -nu12 / E2
+    stiffness_matrix[1, 1] = 1 / E2
+    stiffness_matrix[1, 2] = -nu23 / E2
+    stiffness_matrix[2, 0] = -nu31 / E3
+    stiffness_matrix[2, 1] = -nu23 / E3
+    stiffness_matrix[2, 2] = 1 / E3
 
     # Fill the lower-right 3x3 block (shear strains)
-    compliance_matrix[3, 3] = 1 / G23
-    compliance_matrix[4, 4] = 1 / G31
-    compliance_matrix[5, 5] = 1 / G12
+    stiffness_matrix[3, 3] = 1 / G23
+    stiffness_matrix[4, 4] = 1 / G31
+    stiffness_matrix[5, 5] = 1 / G12
 
     # Copy the upper-right block to the lower-left block
-    compliance_matrix[3, 0] = compliance_matrix[0, 3]
-    compliance_matrix[4, 1] = compliance_matrix[1, 4]
-    compliance_matrix[5, 2] = compliance_matrix[2, 5]
+    stiffness_matrix[3, 0] = stiffness_matrix[0, 3]
+    stiffness_matrix[4, 1] = stiffness_matrix[1, 4]
+    stiffness_matrix[5, 2] = stiffness_matrix[2, 5]
 
     # Copy the lower-right block to the upper-left block
-    compliance_matrix[0, 3] = compliance_matrix[3, 0]
-    compliance_matrix[1, 4] = compliance_matrix[4, 1]
-    compliance_matrix[2, 5] = compliance_matrix[5, 2]
+    stiffness_matrix[0, 3] = stiffness_matrix[3, 0]
+    stiffness_matrix[1, 4] = stiffness_matrix[4, 1]
+    stiffness_matrix[2, 5] = stiffness_matrix[5, 2]
 
-    return compliance_matrix
-
-def generate_stiffness_matrix(E1, E2, E3, nu12, nu23, nu31):
-    compliance_matrix = generate_compliance_matrix(E1, E2, E3, nu12, nu23, nu31)
-    stiffness_matrix = np.linalg.inv(compliance_matrix)
     return stiffness_matrix
+
+def generate_compliance_matrix(E1, E2, E3, nu12, nu23, nu31):
+    stiffness_matrix = generate_stiffness_matrix(E1, E2, E3, nu12, nu23, nu31)
+    compliance_matrix = np.linalg.inv(stiffness_matrix)
+    return compliance_matrix
 
 def plot_elastic_moduli(E1, E2, E3):
     fig = plt.figure()
@@ -61,10 +61,9 @@ def plot_elastic_moduli(E1, E2, E3):
     ax.set_ylabel('y')
     ax.set_zlabel('z')
     ax.set_title('Elastic Moduli')
-    fig.colorbar(ax.plot_surface(X, Y, Z, cmap=cmap, norm=norm), label='Young\'s Modulus (Pa)')
+    fig.colorbar(ax.plot_surface(X, Y, Z, cmap=cmap, norm=norm), label='Young\'s Modulus')
     
     return fig
-
 def plot_shear_modulus(G12, G23, G31):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
@@ -81,7 +80,7 @@ def plot_shear_modulus(G12, G23, G31):
     ax.set_ylabel('y')
     ax.set_zlabel('z')
     ax.set_title('Shear Modulus')
-    fig.colorbar(ax.plot_surface(X, Y, Z, cmap=cmap, norm=norm), label='Shear Modulus (Pa)')
+    fig.colorbar(ax.plot_surface(X, Y, Z, cmap=cmap, norm=norm), label='Shear Modulus')
     
     return fig
     
@@ -128,19 +127,19 @@ G12 = E2 / (2 * (1 + nu12))
 G23 = E3 / (2 * (1 + nu23))
 G31 = E1 / (2 * (1 + nu31))
 
-if st.button("Generate Stiffness Matrix"):
-    stiffness_matrix = generate_stiffness_matrix(E1, E2, E3, nu12, nu23, nu31)
-    stiffness_matrix_exp = np.zeros_like(stiffness_matrix, dtype=object)
+if st.button("Generate Compliance Matrix"):
+    compliance_matrix = generate_compliance_matrix(E1, E2, E3, nu12, nu23, nu31)
+    compliance_matrix_exp = np.zeros_like(compliance_matrix, dtype=object)
     
-    for i in range(stiffness_matrix.shape[0]):
-        for j in range(stiffness_matrix.shape[1]):
-            if stiffness_matrix[i, j] != 0:
-                stiffness_matrix_exp[i, j] = "{:.2e}".format(stiffness_matrix[i, j])
+    for i in range(compliance_matrix.shape[0]):
+        for j in range(compliance_matrix.shape[1]):
+            if compliance_matrix[i, j] != 0:
+                compliance_matrix_exp[i, j] = "{:.2e}".format(compliance_matrix[i, j])
             else:
-                stiffness_matrix_exp[i, j] = "0"
+                compliance_matrix_exp[i, j] = "0"
     
-    st.subheader("Stiffness Matrix:")
-    st.write(stiffness_matrix_exp)
+    st.subheader("Compliance Matrix:")
+    st.write(compliance_matrix_exp)
 
 if st.button("Visualize Elastic Moduli"):
     fig_moduli = plot_elastic_moduli(E1, E2, E3)
