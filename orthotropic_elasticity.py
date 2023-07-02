@@ -127,7 +127,7 @@ G12 = E2 / (2 * (1 + nu12))
 G23 = E3 / (2 * (1 + nu23))
 G31 = E1 / (2 * (1 + nu31))
 
-if st.button("Generate Compliance Matrix"):
+if st.button("Generate the  Compliance Matrix"):
     compliance_matrix = generate_compliance_matrix(E1, E2, E3, nu12, nu23, nu31)
     compliance_matrix_exp = np.zeros_like(compliance_matrix, dtype=object)
     
