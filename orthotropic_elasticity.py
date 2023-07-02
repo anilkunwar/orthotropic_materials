@@ -110,7 +110,7 @@ def plot_poissons_ratio(nu12, nu23, nu31):
 st.title("Orthotropic Material Properties")
 
 # Input for Young's moduli
-st.subheader("Young's Moduli")
+st.subheader("Young's Moduli (Pa)")
 E1 = st.number_input("E1 (Pa)", min_value=0.0, value=2.1e11, format="%e", key="E1")
 E2 = st.number_input("E2 (Pa)", min_value=0.0, value=1.0e11, format="%e", key="E2")
 E3 = st.number_input("E3 (Pa)", min_value=0.0, value=5.0e10, format="%e", key="E3")
