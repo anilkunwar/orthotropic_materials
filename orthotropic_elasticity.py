@@ -128,6 +128,12 @@ G12 = E2 / (2 * (1 + nu12))
 G23 = E3 / (2 * (1 + nu23))
 G31 = E1 / (2 * (1 + nu31))
 
+# Display Shear Moduli
+#st.subheader("Shear Moduli")
+st.write(f"G12 (Pa): {G12:.2e}")
+st.write(f"G23 (Pa): {G23:.2e}")
+st.write(f"G31 (Pa): {G31:.2e}")
+
 if st.button("Generate Stiffness Matrix"):
     stiffness_matrix = generate_stiffness_matrix(E1, E2, E3, nu12, nu23, nu31)
     stiffness_matrix_exp = np.zeros_like(stiffness_matrix, dtype=object)
